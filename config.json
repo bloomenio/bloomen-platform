@@ -1,0 +1,30 @@
+{
+  "development": {
+    "gas": "0xffffff",
+    "provider": "http://localhost:8545",
+    "address": "0x527ef00666deb1772f9b165e385ca04e40147426",
+    "passphrase": "",
+    "privatekey": "0x7c724f7180c3d344340058f27009ab27e22e8a4880c2b0c20b473277d5b944ae"
+  },
+  "quorum": {
+    "gas": "0",
+    "provider": "http://squall-3.atc.gr:8546",
+    "address": "0xfa2645c74efa3989878530df401410e61439b2c7",
+    "passphrase": "bloomen",
+    "privatekey": ""
+  },
+  "quorum-cakeshop": {
+    "gas": "0",
+    "provider": "http://squall-6.atc.gr:8546",
+    "address": "0xD7bd252e3Ada0D1561f66Fd371e9B50a443C06fC",
+    "passphrase": "bloomen",
+    "privatekey": ""
+  },
+  "alastria": {
+    "gas": "0",
+    "provider": "https://alastria.wlilab.eu/alastria",
+    "address": "0x626ccee909a308f8908927b4537614dabbc88efc",
+    "passphrase": "bloomen",
+    "privatekey": ""
+  }
+}

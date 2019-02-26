@@ -1,0 +1,505 @@
+{
+	"variables": [],
+	"info": {
+		"name": "bloomen",
+		"_postman_id": "c0694635-684d-8803-763a-b1d64c07ff9c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth register user",
+			"request": {
+				"url": "squall-3.atc.gr:8080/auth/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"haris\",\n\t\"email\": \"haris@atc.gr\",\n\t\"password\": \"haris\"\n}"
+				},
+				"description": "auth register user"
+			},
+			"response": []
+		},
+		{
+			"name": "auth login",
+			"request": {
+				"url": "squall-3.atc.gr:8080/auth/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"haris\",\n\t\"password\": \"haris\"\n}"
+				},
+				"description": "auth login"
+			},
+			"response": []
+		},
+		{
+			"name": "auth forgot password",
+			"request": {
+				"url": "squall-3.atc.gr:8080/auth/forgot",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"mpouxlhs.xar@gmail.com\"\n}"
+				},
+				"description": "auth forgot password"
+			},
+			"response": []
+		},
+		{
+			"name": "photo upload",
+			"request": {
+				"url": "squall-3.atc.gr:8080/photos/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"description\": \"an image for testing\",\n\t\"keywords\": [\"gif\", \"test\"],\n\t\"price\":\"1\",\n\t\"type\": \"photo\",\n\t\"rightsTime\": \"1 year\",\n\t\"rightsRegion\": \"Greece\",\n\t\"geo\":{\n\t\t\"lat\": 37.983810,\n\t\t\"long\": 23.727539\n\t},\n\t\"base64\": \"data:image/gif;base64,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\"\n}"
+				},
+				"description": "photo upload"
+			},
+			"response": []
+		},
+		{
+			"name": "photo get by hash",
+			"request": {
+				"url": "http://squall-3.atc.gr:8080/photos/8b2bfb64cb05e8f40d84a5032f46f763",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "photo get by hash"
+			},
+			"response": []
+		},
+		{
+			"name": "photo update info",
+			"request": {
+				"url": "squall-3.atc.gr:8080/photos/8b2bfb64cb05e8f40d84a5032f46f763",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"description\": \"image for testing\",\n\t\"keywords\": [\"gif\", \"test\"],\n\t\"price\": \"2\",\n\t\"type\": \"photo\",\n\t\"rightsTime\": \"2 years\",\n\t\"rightsRegion\": \"Greece\",\n\t\"geo\":{\n\t\t\"lat\": 37.983810,\n\t\t\"long\": 23.727539\n\t}\n}"
+				},
+				"description": "photo update info"
+			},
+			"response": []
+		},
+		{
+			"name": "photo get all, with pagination",
+			"request": {
+				"url": {
+					"raw": "http://squall-3.atc.gr:8080/photos?before=2018-07-09T11:22:09.241Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"photos"
+					],
+					"query": [
+						{
+							"key": "before",
+							"value": "2018-07-09T11:22:09.241Z",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "photo get all, with pagination"
+			},
+			"response": []
+		},
+		{
+			"name": "photo search, with pagination",
+			"request": {
+				"url": "http://squall-3.atc.gr:8080/photos/search",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"term\":\"test\"\n}"
+				},
+				"description": "photo search, with pagination"
+			},
+			"response": []
+		},
+		{
+			"name": "users list",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"haris\",\n\t\"password\": \"haris\"\n}"
+				},
+				"description": "users list"
+			},
+			"response": []
+		},
+		{
+			"name": "user with kyc info",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users/c0ba88b8bca79ca3b50b96abdf431766/kyc",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"approve\": false\n}"
+				},
+				"description": "user with kyc info"
+			},
+			"response": []
+		},
+		{
+			"name": "user vote",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users/c0ba88b8bca79ca3b50b96abdf431766/vote",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"vote\": -1\n}"
+				},
+				"description": "user vote"
+			},
+			"response": []
+		},
+		{
+			"name": "user get (me)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/me",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"base64\": \"data:image/gif;base64,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\"\n}"
+				},
+				"description": "user get (me)"
+			},
+			"response": []
+		},
+		{
+			"name": "user update profile (me)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/me",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"email\": \"xbouchlis@atc.gr\",\n\t\"organisation\": \"ATC\"\n}"
+				},
+				"description": "user update profile (me)"
+			},
+			"response": []
+		},
+		{
+			"name": "user change password  (me)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/me/password",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"oldPassword\": \"86f01d46961db3f869d747a51419d13c\",\n\t\"newPassword\": \"haris\"\n}"
+				},
+				"description": "user change password  (me)"
+			},
+			"response": []
+		},
+		{
+			"name": "user get photos  (me) (owner or has rights)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/me/photos",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"base64\": \"data:image/gif;base64,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\"\n}"
+				},
+				"description": "user get photos (me) (owner or has rights)"
+			},
+			"response": []
+		},
+		{
+			"name": "asset host",
+			"request": {
+				"url": "http://squall-3.atc.gr:8080/assets/host/8b2bfb64cb05e8f40d84a5032f46f763",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"base64\": \"data:image/gif;base64,R0lGODlhPQBEAPeoAJosM//AwO/AwHVYZ/z595kzAP/s7P+goOXMv8+fhw/v739/f+8PD98fH/8mJl+fn/9ZWb8/PzWlwv///6wWGbImAPgTEMImIN9gUFCEm/gDALULDN8PAD6atYdCTX9gUNKlj8wZAKUsAOzZz+UMAOsJAP/Z2ccMDA8PD/95eX5NWvsJCOVNQPtfX/8zM8+QePLl38MGBr8JCP+zs9myn/8GBqwpAP/GxgwJCPny78lzYLgjAJ8vAP9fX/+MjMUcAN8zM/9wcM8ZGcATEL+QePdZWf/29uc/P9cmJu9MTDImIN+/r7+/vz8/P8VNQGNugV8AAF9fX8swMNgTAFlDOICAgPNSUnNWSMQ5MBAQEJE3QPIGAM9AQMqGcG9vb6MhJsEdGM8vLx8fH98AANIWAMuQeL8fABkTEPPQ0OM5OSYdGFl5jo+Pj/+pqcsTE78wMFNGQLYmID4dGPvd3UBAQJmTkP+8vH9QUK+vr8ZWSHpzcJMmILdwcLOGcHRQUHxwcK9PT9DQ0O/v70w5MLypoG8wKOuwsP/g4P/Q0IcwKEswKMl8aJ9fX2xjdOtGRs/Pz+Dg4GImIP8gIH0sKEAwKKmTiKZ8aB/f39Wsl+LFt8dgUE9PT5x5aHBwcP+AgP+WltdgYMyZfyywz78AAAAAAAD///8AAP9mZv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAKgALAAAAAA9AEQAAAj/AFEJHEiwoMGDCBMqXMiwocAbBww4nEhxoYkUpzJGrMixogkfGUNqlNixJEIDB0SqHGmyJSojM1bKZOmyop0gM3Oe2liTISKMOoPy7GnwY9CjIYcSRYm0aVKSLmE6nfq05QycVLPuhDrxBlCtYJUqNAq2bNWEBj6ZXRuyxZyDRtqwnXvkhACDV+euTeJm1Ki7A73qNWtFiF+/gA95Gly2CJLDhwEHMOUAAuOpLYDEgBxZ4GRTlC1fDnpkM+fOqD6DDj1aZpITp0dtGCDhr+fVuCu3zlg49ijaokTZTo27uG7Gjn2P+hI8+PDPERoUB318bWbfAJ5sUNFcuGRTYUqV/3ogfXp1rWlMc6awJjiAAd2fm4ogXjz56aypOoIde4OE5u/F9x199dlXnnGiHZWEYbGpsAEA3QXYnHwEFliKAgswgJ8LPeiUXGwedCAKABACCN+EA1pYIIYaFlcDhytd51sGAJbo3onOpajiihlO92KHGaUXGwWjUBChjSPiWJuOO/LYIm4v1tXfE6J4gCSJEZ7YgRYUNrkji9P55sF/ogxw5ZkSqIDaZBV6aSGYq/lGZplndkckZ98xoICbTcIJGQAZcNmdmUc210hs35nCyJ58fgmIKX5RQGOZowxaZwYA+JaoKQwswGijBV4C6SiTUmpphMspJx9unX4KaimjDv9aaXOEBteBqmuuxgEHoLX6Kqx+yXqqBANsgCtit4FWQAEkrNbpq7HSOmtwag5w57GrmlJBASEU18ADjUYb3ADTinIttsgSB1oJFfA63bduimuqKB1keqwUhoCSK374wbujvOSu4QG6UvxBRydcpKsav++Ca6G8A6Pr1x2kVMyHwsVxUALDq/krnrhPSOzXG1lUTIoffqGR7Goi2MAxbv6O2kEG56I7CSlRsEFKFVyovDJoIRTg7sugNRDGqCJzJgcKE0ywc0ELm6KBCCJo8DIPFeCWNGcyqNFE06ToAfV0HBRgxsvLThHn1oddQMrXj5DyAQgjEHSAJMWZwS3HPxT/QMbabI/iBCliMLEJKX2EEkomBAUCxRi42VDADxyTYDVogV+wSChqmKxEKCDAYFDFj4OmwbY7bDGdBhtrnTQYOigeChUmc1K3QTnAUfEgGFgAWt88hKA6aCRIXhxnQ1yg3BCayK44EWdkUQcBByEQChFXfCB776aQsG0BIlQgQgE8qO26X1h8cEUep8ngRBnOy74E9QgRgEAC8SvOfQkh7FDBDmS43PmGoIiKUUEGkMEC/PJHgxw0xH74yx/3XnaYRJgMB8obxQW6kL9QYEJ0FIFgByfIL7/IQAlvQwEpnAC7DtLNJCKUoO/w45c44GwCXiAFB/OXAATQryUxdN4LfFiwgjCNYg+kYMIEFkCKDs6PKAIJouyGWMS1FSKJOMRB/BoIxYJIUXFUxNwoIkEKPAgCBZSQHQ1A2EWDfDEUVLyADj5AChSIQW6gu10bE/JG2VnCZGfo4R4d0sdQoBAHhPjhIB94v/wRoRKQWGRHgrhGSQJxCS+0pCZbEhAAOw==\"\n}"
+				},
+				"description": "photo host"
+			},
+			"response": []
+		},
+		{
+			"name": "UNUSED - asset list",
+			"request": {
+				"url": "squall-3.atc.gr:8080/assets/list/2/del.txt",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"base64\": \"data:image/gif;base64,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\"\n}"
+				},
+				"description": "photo list"
+			},
+			"response": []
+		},
+		{
+			"name": "kyc set",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users/kyc",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\": \"Haris\",\n\t\"lastname\": \"Bouchlis\",\n\t\"address\": \"Rizareiou 10\",\n\t\"phone\": \"6947152357\",\n\t\"id1\": \"data:image/gif;base64,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\",\n\t\"id2\": \"data:image/gif;base64,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\"\n}"
+				},
+				"description": "kyc set"
+			},
+			"response": []
+		},
+		{
+			"name": "kyc get uploaded (status 1)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users/kyc",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\": \"haris\",\n\t\"password\": \"haris\"\n}"
+				},
+				"description": "kyc get uploaded (status 1)"
+			},
+			"response": []
+		},
+		{
+			"name": "kyc approve/decline (status 2 OR status 3)",
+			"request": {
+				"url": "squall-3.atc.gr:8080/users/c0ba88b8bca79ca3b50b96abdf431766/kyc",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InJvbGUiOiJwaG90b2dyYXBoZXIiLCJyZXB1dGF0aW9uIjp7InBvc2l0aXZlIjowLCJuZWdhdGl2ZSI6MH0sInNldHRpbmdzIjp7fSwid2FsbGV0QWRkcmVzcyI6IjB4YzBiYTg4YjhiY2E3OWNhM2I1MGI5NmFiZGY0MzE3NjYiLCJfaWQiOiI1YjQ0YTQ4ZjMzZWM5NjI2NTQxOTc3NzAiLCJ1c2VybmFtZSI6ImhhcmlzIiwiaGFzaCI6ImMwYmE4OGI4YmNhNzljYTNiNTBiOTZhYmRmNDMxNzY2IiwiZW1haWwiOiJoYXJpc0BhdGMuZ3IiLCJreWMiOnsic3RhdHVzIjowfSwiY3JlYXRlZEF0VVRDIjoiMjAxOC0wNy0xMFQxMjoyMDozMS44NDNaIiwiX192IjowfSwiaWF0IjoxNTMxMjI1MjMyfQ._FMu54G1A4sRSLP3iLhlg53KK4RMnknX9W6G_o0IXhY",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"approve\": true\n}"
+				},
+				"description": "kyc approve/decline (status 2 OR status 3)"
+			},
+			"response": []
+		}
+	]
+}

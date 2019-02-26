@@ -1,0 +1,269 @@
+/* =============================================================================
+   HTML5 CSS Reset Minified - Eric Meyer
+   ========================================================================== */
+@import url("https://fonts.googleapis.com/css?family=Monoton|Nova+Mono");
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+abbr,
+address,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+samp,
+small,
+strong,
+sub,
+sup,
+var,
+b,
+i,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+nav ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: none;
+}
+a {
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+  text-decoration: none;
+}
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+del {
+  text-decoration: line-through;
+}
+abbr[title],
+dfn[title] {
+  border-bottom: 1px dotted;
+  cursor: help;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+input,
+select {
+  vertical-align: middle;
+}
+li {
+  list-style: none;
+}
+
+/* =============================================================================
+   My CSS
+   ========================================================================== */
+
+/* ---- base ---- */
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(90deg, #2a205f 30%, #9636b2 100%); */
+  /* background: rgb(2,207,255); */
+  background: linear-gradient(
+    100deg,
+    rgba(2, 207, 255, 1) 0%,
+    rgba(55, 205, 172, 1) 50%
+  );
+}
+
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body {
+  font: normal 75% Arial, Helvetica, sans-serif;
+}
+
+.middle {
+  padding: 50px 0;
+  /* background-color: rgba(0, 0, 0, 0.3); */
+  min-width: 100%;
+  color: white;
+  top: 50%;
+  right: 50%;
+  transform: translateY(-50%) translateX(50%);
+  text-align: center;
+  position: absolute;
+  font-family: "Monoton", cursive;
+}
+
+.middle h1 {
+  font-size: 50px;
+  font-weight: 300;
+  color: white;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.87);
+  user-select: none;
+}
+
+.middle a {
+  font-size: 25px;
+  font-weight: 300;
+  padding-top: 17px;
+  margin-top: 10px;
+  color: rgb(255, 255, 255);
+  transition: text-shadow 0.1s ease-in-out;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.58);
+  font-family: "Nova Mono", monospace;
+}
+
+.middle a:hover {
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.58);
+}
+
+.middle a:active {
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.58);
+}
+
+.middle a:visited {
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.58);
+}
+
+#version {
+  font-size: 17px;
+  font-family: "Nova Mono", monospace;
+}
+
+#swagger {
+  max-height: 25px;
+  vertical-align: middle;
+  transition: all 0.1s ease-in-out;
+  border-radius: 50%;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.37);
+  filter: grayscale(1);
+}
+
+.middle a:hover > #swagger {
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.37);
+  filter: grayscale(0);
+}
+
+.middle a:active > #swagger {
+  box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.37);
+  filter: grayscale(0);
+}
+
+.middle a:visited > #swagger {
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.37);
+  filter: grayscale(1);
+}
+
+canvas {
+  display: block;
+}
+
+/* ---- particles.js container ---- */
+
+#particles-js {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background-color: transparent;
+  background-image: url("");
+  background-size: cover;
+  /* background-position: 50% 50%; */
+  background-repeat: no-repeat;
+}
