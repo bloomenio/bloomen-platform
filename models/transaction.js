@@ -7,9 +7,9 @@ const transactionSchema = new Schema(
   {
     hash: { type: String, unique: true, required: true }, // transaction hash
     type: { type: String }, //"upload", "payment"
-    photoHash: { type: String }, // photo hash saved in db
-    photoId: { type: Number }, // photo id saved in blockchain
-    payment: { type: Number, default: 0 }, // amount paid for photo rights
+    mediaHash: { type: String }, // media hash saved in db
+    mediaId: { type: Number }, // media id saved in blockchain
+    payment: { type: Number, default: 0 }, // amount paid for media rights
     userHash: { type: String }, // user hash that initiated the transaction
     receiverHash: { type: String }, // user hash that received the transaction
     createdAtUTC: Date
@@ -33,9 +33,9 @@ transactionSchema.virtual('receiver', {
   justOne: true // for many-to-1 relationships
 });
 
-transactionSchema.virtual('photo', {
+transactionSchema.virtual('media', {
   ref: 'Photo',
-  localField: 'photoHash',
+  localField: 'mediaHash',
   foreignField: 'hash',
   justOne: true // for many-to-1 relationships
 });
@@ -44,9 +44,9 @@ transactionSchema.virtual('photo', {
  * @typedef Transaction
  * @property {string} hash.required - Transaction hash
  * @property {string} type - Transaction type, "upload" or "payment"
- * @property {string} photoHash - Hash of the photo saved in DB
- * @property {integer} photoId - Photo id saved in blockchain
- * @property {number} payment - Amount paid for photo rights, default: 0
+ * @property {string} mediaHash - Hash of the media saved in DB
+ * @property {integer} mediaId - Photo id saved in blockchain
+ * @property {number} payment - Amount paid for media rights, default: 0
  * @property {string} userHash - User hash that initiated the transaction
  * @property {string} receiverHash - User hash that received the transaction
  * @property {string} createdAtUTC - When transaction was made

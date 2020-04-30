@@ -3,22 +3,22 @@ const db = require("../helpers/db");
 
 const Schema = mongoose.Schema;
 
-const invSchema = new Schema(
+const assignmentSchema = new Schema(
   {
-    organisation: { type: String, required: true },
-    email: { type: String, required: true },
-    accepted: { type: Boolean, required: true, default: false },
-    user: { type: Object },
-    invitedBy: { type: Object },
+    organisation: { type: String },
+    emailBody: { type: String},
+    status: { type: String },
+    photographer: { type: Object },
+    assignedBy: { type: Object },
     createdAtUTC: { type: Date }
   },
   { minimize: false }
 );
 
-db.errorHandler(invSchema);
+db.errorHandler(assignmentSchema);
 
 /**
- * @typedef Invitation
+ * @typedef Assignment
  * @property {string} organisation.required - Organisation name where the user is invited in
  * @property {string} email.required - User email where invitation is sent
  * @property {boolean} accepted.required - User accepted the invitation, default: false
@@ -26,6 +26,10 @@ db.errorHandler(invSchema);
  * @property {User.model} invitedBy - User object, the user that sent the invitation
  * @property {string} createdAtUTC - When invitation was sent
  */
-const Invitation = mongoose.model("Invitation", invSchema, "invitations");
+const Assignment = mongoose.model(
+  "Assignment",
+  assignmentSchema,
+  "assignments"
+);
 
-module.exports = Invitation;
+module.exports = Assignment;

@@ -1,8 +1,8 @@
-const express = require('express');
-const User = require('../models/user');
-const hash = require('../helpers/hash');
-const aws = require('../helpers/aws');
-const publisher = require('../middlewares/publisher');
+const express = require("express");
+const User = require("../models/user");
+const hash = require("../helpers/hash");
+const aws = require("../helpers/aws");
+const user = require("../middlewares/user");
 const router = express.Router();
 
 /**
@@ -15,7 +15,33 @@ const router = express.Router();
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/', publisher, getUsers);
+router.get("/", user.read, getUsers);
+
+/**
+ * Get all users, for admins only
+ * @route GET /users/all
+ * @group users - Operations about users
+ * @returns {Array<User>} 200 - An array of users
+ * @returns {Error} 401 - Unauthorized
+ * @returns {Error} 403 - User is not a publisher
+ * @returns {Error} 500 - Unexpected
+ * @security JWT
+ */
+router.get("/all", user.update, getUsersAll);
+
+/**
+ * Edit user
+ * @route PUT /users/{hash}
+ * @group users - Operations about users
+ * @param {string} hash.path.required - Unique hash of the user
+ * @param {User.model} user.body.required - Updated user object
+ * @returns {User} 200 - Updated user
+ * @returns {Error} 401 - Unauthorized
+ * @returns {Error} 403 - User is not a publisher
+ * @returns {Error} 500 - Unexpected
+ * @security JWT
+ */
+router.put("/:hash", user.update, updateUser);
 
 /**
  * Get all users with KYC requests
@@ -27,7 +53,19 @@ router.get('/', publisher, getUsers);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/kyc', publisher, getKYC);
+router.get("/kyc", user.kyc, getKYC);
+
+/**
+ * Get all available photographers
+ * @route GET /users/photographer
+ * @group users - Operations about users
+ * @returns {Array<User>} 200 - An array of users
+ * @returns {Error} 401 - Unauthorized
+ * @returns {Error} 403 - User is not a publisher
+ * @returns {Error} 500 - Unexpected
+ * @security JWT
+ */
+router.get("/photographer", user.kyc, getAvailablePhotographers);
 
 /**
  * Get user's KYC request
@@ -39,7 +77,7 @@ router.get('/kyc', publisher, getKYC);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.post('/kyc', addKYC);
+router.post("/kyc", addKYC);
 
 /**
  * Get user's KYC request
@@ -52,7 +90,7 @@ router.post('/kyc', addKYC);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/:hash/kyc', publisher, getUserKYC);
+router.get("/:hash/kyc", user.kyc, getUserKYC);
 
 /**
  * Review user's KYC request
@@ -66,7 +104,7 @@ router.get('/:hash/kyc', publisher, getUserKYC);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.put('/:hash/kyc', publisher, reviewKYC);
+router.put("/:hash/kyc", user.kyc, reviewKYC);
 
 /**
  * Vote photographer
@@ -79,29 +117,49 @@ router.put('/:hash/kyc', publisher, reviewKYC);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.put('/:hash/vote', vote);
+router.put("/:hash/vote", vote);
 
 /**
  * FUNCTIONS IMPLEMENTATION
  */
 
 function getUsers(req, res, next) {
-  User.find({ 'kyc.status': 1 })
-    .then(users => {
+  User.find({ "kyc.status": 1 })
+    .then((users) => {
       res.send(users);
     })
-    .catch(error => {
+    .catch((error) => {
+      next(error);
+    });
+}
+
+function getUsersAll(req, res, next) {
+  User.find({})
+    .then((users) => {
+      res.send(users);
+    })
+    .catch((error) => {
       next(error);
     });
 }
 
 function getKYC(req, res, next) {
-  User.find({ role: 'photographer' })
-    .sort({ 'kyc.status': -1 })
-    .then(users => {
+  User.find({ role: "photographer" })
+    .sort({ "kyc.status": -1 })
+    .then((users) => {
       res.send(users);
     })
-    .catch(error => {
+    .catch((error) => {
+      next(error);
+    });
+}
+
+function getAvailablePhotographers(req, res, next) {
+  User.find({ role: "photographer", available: true })
+    .then((users) => {
+      res.send(users);
+    })
+    .catch((error) => {
       next(error);
     });
 }
@@ -110,7 +168,7 @@ function addKYC(req, res, next) {
   let filesToUpload = [];
   let uploadPromises = [];
   if (
-    req.body.id1 !== '' &&
+    req.body.id1 !== "" &&
     req.body.id1 !== null &&
     req.body.id1 !== undefined
   ) {
@@ -118,7 +176,7 @@ function addKYC(req, res, next) {
   }
 
   if (
-    req.body.id2 !== '' &&
+    req.body.id2 !== "" &&
     req.body.id2 !== null &&
     req.body.id2 !== undefined
   ) {
@@ -130,14 +188,14 @@ function addKYC(req, res, next) {
   }
 
   Promise.all(uploadPromises)
-    .then(files => {
+    .then((files) => {
       let kyc = {};
-      kyc.address = req.body.address || '';
-      kyc.phone = req.body.phone || '';
-      kyc.firstname = req.body.firstname || '';
-      kyc.lastname = req.body.lastname || '';
-      kyc.id1 = files.length > 0 ? files[0].Location : '';
-      kyc.id2 = files.length > 1 ? files[1].Location : '';
+      kyc.address = req.body.address || "";
+      kyc.phone = req.body.phone || "";
+      kyc.firstname = req.body.firstname || "";
+      kyc.lastname = req.body.lastname || "";
+      kyc.id1 = files.length > 0 ? files[0].Location : "";
+      kyc.id2 = files.length > 1 ? files[1].Location : "";
       kyc.status = 1; // see user model for enum meaning
 
       return User.findOneAndUpdate(
@@ -146,20 +204,40 @@ function addKYC(req, res, next) {
         { new: true }
       );
     })
-    .then(user => {
+    .then((user) => {
       res.send(user);
     })
-    .catch(error => {
+    .catch((error) => {
       next(error);
     });
 }
 
 function getUserKYC(req, res, next) {
   User.findOne({ hash: req.params.hash })
-    .then(response => {
+    .then((response) => {
       res.send(response);
     })
-    .catch(error => {
+    .catch((error) => {
+      next(error);
+    });
+}
+
+function updateUser(req, res, next) {
+  let updated = req.body;
+  delete updated.username;
+  delete updated.hash;
+
+  User.findOne({ hash: req.params.hash })
+    .then((user) => {
+      Object.keys(updated).forEach((key) => {
+        user[key] = updated[key];
+      });
+      return user.save();
+    })
+    .then((user) => {
+      res.send(user);
+    })
+    .catch((error) => {
       next(error);
     });
 }
@@ -173,14 +251,14 @@ function reviewKYC(req, res, next) {
 
   User.findOneAndUpdate(
     { hash: req.params.hash },
-    { $set: { 'kyc.status': status, 'kyc.reviewdBy': req.user.username } },
+    { $set: { "kyc.status": status, "kyc.reviewdBy": req.user.username } },
     { new: true }
   )
     .exec()
-    .then(user => {
+    .then((user) => {
       res.send(user);
     })
-    .catch(error => {
+    .catch((error) => {
       next(error);
     });
 }
@@ -190,11 +268,11 @@ function vote(req, res, next) {
   let vote = req.body.vote;
 
   User.findOne({ hash: req.params.hash })
-    .then(user => {
+    .then((user) => {
       let updated = {};
-      updated['reputation.positive'] =
+      updated["reputation.positive"] =
         vote > 0 ? user.reputation.positive + 1 : user.reputation.positive;
-      updated['reputation.negative'] =
+      updated["reputation.negative"] =
         vote < 0 ? user.reputation.negative + 1 : user.reputation.negative;
 
       return User.findOneAndUpdate(
@@ -203,10 +281,10 @@ function vote(req, res, next) {
         { new: true }
       );
     })
-    .then(user => {
+    .then((user) => {
       res.send(user);
     })
-    .catch(error => {
+    .catch((error) => {
       next(error);
     });
 }

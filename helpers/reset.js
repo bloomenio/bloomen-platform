@@ -28,15 +28,15 @@
  *
  */
 
-const Wallet = require("./wallet");
+const Blockchain = require("./blockchain");
 const Organisation = require("../models/organisation");
 const Transaction = require("../models/transaction");
-const Photo = require("../models/photo");
+const Media = require("../models/media");
 const hash = require("./hash");
 const db = require("./db");
 
 const ETH = Math.pow(10, 18);
-const _balance = 100 * ETH;
+const _balance = 100;
 
 db.connect();
 
@@ -45,8 +45,8 @@ db.connect();
  * and creates new wallets for them.
  * Empties transactions and photos.
  */
-function reinitializeWallets(initialBalance, specificOrganisation) {
-  let balance = !!initialBalance ? initialBalance : 100 * ETH;
+async function reinitializeWallets(initialBalance, specificOrganisation) {
+  let balance = !!initialBalance ? initialBalance : 100;
 
   let getOrgQuery = {};
   let deletePhotoQuery = {};
@@ -58,38 +58,42 @@ function reinitializeWallets(initialBalance, specificOrganisation) {
     deleteTransactionQuery = { userHash: hash(specificOrganisation) };
   }
 
-  Organisation.find(getOrgQuery)
-    .then(organisations => {
-      console.log("WALLETS TO BE UPDATED", organisations.length);
-      return organisations.reduce((p, org) => {
-        return p.then(async () => {
-          console.log("\x1b[36m%s\x1b[0m", org.name, org.walletAddress);
-          org.walletAddress = await Wallet.createWallet(org.hash, balance);
-          return org.save();
-        });
-      }, Promise.resolve());
-    })
-    .then(async orgs => {
-      console.log("WALLETS UPDATED");
-      let last_balance = await Wallet.getTokenBalance(orgs.walletAddress);
-      console.log("LAST BALANCE IS", last_balance);
-      return Photo.remove(deletePhotoQuery);
-    })
-    .then(removed => {
-      console.log("Removed all photos from DB.");
-      return Transaction.remove(deleteTransactionQuery);
-    })
-    .then(removed => {
-      console.log("Removed all transactions from DB.");
-      process.exit();
-    })
-    .catch(process.exit);
+  try {
+    const organisations = await Organisation.find(getOrgQuery);
+    console.log("WALLETS TO BE UPDATED", organisations.length);
+
+    for (let i = 0; i < organisations.length; i++) {
+      const org = organisations[i];
+
+      const wallet = await Blockchain.createWallet(Blockchain.createMnemonic());
+      console.log("\x1b[36m%s\x1b[0m", "wallet created", wallet.address);
+      const transaction = await Blockchain.transferTokensFromContract(
+        wallet.address,
+        balance
+      );
+      console.log("\x1b[36m%s\x1b[0m", "transaction sent");
+      org.walletAddress = wallet.address;
+      org.mnemonic = wallet.mnemonic;
+      console.log("\x1b[36m%s\x1b[0m", org.name, org.walletAddress);
+      await org.save();
+    }
+
+    await Media.remove(deletePhotoQuery);
+    console.log("Removed all photos from DB.");
+
+    await Transaction.remove(deleteTransactionQuery);
+    console.log("Removed all transactions from DB.");
+    process.exit();
+  } catch (ex) {
+    console.log("ERROR", ex);
+    process.exit();
+  }
 }
 
 async function runScript() {
+  console.log("Balance of new wallets:", _balance);
   if (process.env.npm_package_config_reset) {
     let organisations = [];
-
     const orgsString =
       process.env.npm_package_config_reset !== String(true)
         ? process.env.npm_package_config_reset

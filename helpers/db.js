@@ -6,15 +6,13 @@ const connectionURL = process.env.CONNECTION_URL;
 /* istanbul ignore next */
 function connect() {
   console.log("db connecting...");
-  return mongoose.connect(
-    connectionURL,
-    {
-      useNewUrlParser: true,
-      config: {
-        autoIndex: true
-      }
-    }
-  );
+  return mongoose.connect(connectionURL, {
+    // useUnifiedTopology: true,
+    // useNewUrlParser: true,
+    config: {
+      autoIndex: true,
+    },
+  });
 }
 
 /* istanbul ignore next */
@@ -25,7 +23,7 @@ function errorHandler(schema) {
       const value = error.message.split("{ : ")[1].split(" }")[0];
       next({
         status: 409,
-        error: "An entry with " + field + " " + value + " already exists."
+        error: "An entry with " + field + " " + value + " already exists.",
       });
     } else {
       next();
@@ -35,7 +33,7 @@ function errorHandler(schema) {
 
 const db = {
   connect: connect,
-  errorHandler: errorHandler
+  errorHandler: errorHandler,
 };
 
 module.exports = db;

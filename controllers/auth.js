@@ -1,14 +1,14 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const ObjectId = require('mongoose').Types.ObjectId;
-const Organisation = require('../models/organisation');
-const Invitation = require('../models/invitation');
-const hash = require('../helpers/hash');
-const Wallet = require('../helpers/wallet');
-const mailer = require('../helpers/mailer');
+const express = require("express");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+const ObjectId = require("mongoose").Types.ObjectId;
+const Organisation = require("../models/organisation");
+const Invitation = require("../models/invitation");
+const hash = require("../helpers/hash");
+const Blockchain = require("../helpers/blockchain");
+const mailer = require("../helpers/mailer");
 const router = express.Router();
-require('dotenv').config();
+require("dotenv").config();
 
 /**
  * User login, returns JWT token.
@@ -19,7 +19,7 @@ require('dotenv').config();
  * @returns {Error} 401 - Unauthorized
  * @returns {Error} 500 - Unexpected
  */
-router.post('/login', loginUser);
+router.post("/login", loginUser);
 
 /**
  * User registration, returns JWT token.
@@ -30,7 +30,7 @@ router.post('/login', loginUser);
  * @returns {Error} 400 - Invalid Invitation
  * @returns {Error} 500 - Unexpected
  */
-router.post('/register', registrerUser);
+router.post("/register", registrerUser);
 
 /**
  * Forgot password, resets password and sends email to user to reset it.
@@ -41,7 +41,7 @@ router.post('/register', registrerUser);
  * @returns {Error} 404 - User not found
  * @returns {Error} 500 - Unexpected
  */
-router.post('/forgot', forgotPassword);
+router.post("/forgot", forgotPassword);
 
 /**
  * FUNCTIONS IMPLEMENTATION
@@ -60,7 +60,7 @@ function loginUser(req, res, next) {
         const token = jwt.sign({ user: user }, process.env.JWT_SECRET);
         res.send({ token: token });
       } else {
-        throw { status: 401, error: 'Wrong credentials' };
+        throw { status: 401, error: "Wrong credentials" };
       }
     })
     .catch(err => {
@@ -86,16 +86,14 @@ async function getOrganisation(req) {
 }
 
 async function registrerUser(req, res, next) {
-  const ETH = Math.pow(10, 18);
-
   // check if invitation id is valid ObjectId;
   if (req.body.invitation) {
     try {
       if (!ObjectId.isValid(req.body.invitation)) {
-        throw { status: 400, error: 'Invitation not valid.' };
+        throw { status: 400, error: "Invitation not valid." };
       }
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 
@@ -104,7 +102,7 @@ async function registrerUser(req, res, next) {
 
   const organisation = organisationInfo.organisation;
   const organisationIsNew = organisationInfo.isNew;
-  let role = 'photographer';
+  let role = ["photographer"];
 
   let orgData = {
     name: organisation,
@@ -113,11 +111,21 @@ async function registrerUser(req, res, next) {
 
   // if organisation is new, create a wallet
   if (organisationIsNew) {
-    const wallet = await Wallet.createWallet(hash(organisation), 0 * ETH);
-    orgData.walletAddress = wallet;
-    role = 'photographer';
+    let wallet;
+    try {
+      const mnemonic = req.body.mnemonic
+        ? req.body.mnemonic
+        : Blockchain.createMnemonic();
+      wallet = await Blockchain.createWallet(mnemonic);
+    } catch (e) {
+      return next({ status: 400, error: "invalid mnemonic." });
+    }
+
+    orgData.walletAddress = wallet.address;
+    orgData.mnemonic = wallet.mnemonic;
+    role = ["photographer"];
   } else {
-    role = 'publisher';
+    role = ["publisher", "reviewer"];
   }
 
   //create organisation if it does not exist
@@ -137,7 +145,7 @@ async function registrerUser(req, res, next) {
   user.role = role;
   user.organisation = organisation;
   user.reputation = { positive: 0, negative: 0 };
-  user.reviewedBy = '';
+  user.reviewedBy = "";
   user.createdAtUTC = new Date();
 
   user
@@ -169,12 +177,12 @@ async function registrerUser(req, res, next) {
 function forgotPassword(req, res, next) {
   let password;
   User.findOne({ email: req.body.email })
-    .select('+password')
+    .select("+password")
     .then(user => {
       if (user === null) {
         throw {
           status: 404,
-          error: 'User with given email not found in database.'
+          error: "User with given email not found in database."
         };
       }
 
@@ -187,13 +195,13 @@ function forgotPassword(req, res, next) {
     })
     .then(user => {
       const text =
-        'Your new password is ' +
+        "Your new password is " +
         password +
-        '. You should change it from your profile page as soon as you log in.';
-      return mailer.sendEmail(user.email, 'Reset Password', text, text);
+        ". You should change it from your profile page as soon as you log in.";
+      return mailer.sendEmail(user.email, "Reset Password", text, text);
     })
     .then(response => {
-      res.send({ message: 'Email sent.' });
+      res.send({ message: "Email sent." });
     })
     .catch(error => {
       next(error);

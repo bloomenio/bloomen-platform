@@ -1,8 +1,10 @@
-const express = require('express');
-const Photo = require('../models/photo');
-const User = require('../models/user');
-const Organisation = require('../models/organisation');
-const hash = require('../helpers/hash');
+const express = require("express");
+const Media = require("../models/media");
+const User = require("../models/user");
+const Organisation = require("../models/organisation");
+const Blockchain = require("../helpers/blockchain");
+const hash = require("../helpers/hash");
+const me = require("../middlewares/me");
 const router = express.Router();
 
 /**
@@ -14,7 +16,7 @@ const router = express.Router();
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/', getUser);
+router.get("/", getUser);
 
 /**
  * Update user profile
@@ -26,7 +28,18 @@ router.get('/', getUser);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.put('/', updateUser);
+router.put("/", updateUser);
+
+/**
+ * Toggle user profile
+ * @route PUT /me/availability
+ * @group me - Logged in user functions
+ * @returns {User.model} 200 - Updated user
+ * @returns {Error} 401 - Unauthorized
+ * @returns {Error} 500 - Unexpected
+ * @security JWT
+ */
+router.put("/availability", toggleUserAvailability);
 
 /**
  * Update user password
@@ -38,18 +51,30 @@ router.put('/', updateUser);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.put('/password', changePassword);
+router.put("/password", changePassword);
+
+/**
+ * Update wallet mnemonic
+ * @route PUT /me/mnemonic
+ * @group me - Logged in user functions
+ * @param {ChangePasswordDTO.model}  data.body.required - new mnemonic
+ * @returns {MessageDTO.model} 200 - Success message
+ * @returns {Error} 401 - Unauthorized
+ * @returns {Error} 500 - Unexpected
+ * @security JWT
+ */
+router.put("/mnemonic", changeMnemonic);
 
 /**
  * Photos where user has rights, or is owner of
  * @route GET /me/photos
  * @group me - Logged in user functions
- * @returns {Array<Photo>} 200 - Array of photos
+ * @returns {Array<Media>} 200 - Array of photos
  * @returns {Error} 401 - Unauthorized
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/photos', getPhotos);
+router.get("/photos", getPhotos);
 
 /**
  * Returns user's organisation
@@ -60,7 +85,7 @@ router.get('/photos', getPhotos);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/organisation', getOrganisation);
+router.get("/organisation", getOrganisation);
 
 /**
  * FUNCTIONS IMPLEMENTATION
@@ -68,8 +93,25 @@ router.get('/organisation', getOrganisation);
 
 function getUser(req, res, next) {
   User.findOne({ hash: hash(req.user.username) })
-    .populate('org')
-    .then(user => {
+    .populate("org")
+    .then((user) => {
+      return res.send(user);
+    })
+    .catch(next);
+}
+
+function toggleUserAvailability(req, res, next) {
+  User.findOne({ hash: hash(req.user.username) })
+    .then((user) => {
+      return User.findOneAndUpdate(
+        { hash: hash(req.user.username) },
+        { available: !user.available },
+        {
+          new: true,
+        }
+      );
+    })
+    .then((user) => {
       return res.send(user);
     })
     .catch(next);
@@ -81,24 +123,24 @@ function updateUser(req, res, next) {
   profile.settings = req.body.settings || req.user.settings;
   profile.organisation = req.body.organisation || req.user.organisation;
   User.findOneAndUpdate({ hash: hash(req.user.username) }, profile, {
-    new: true
+    new: true,
   })
-    .then(user => {
+    .then((user) => {
       res.send(user);
     })
-    .catch(error => {
+    .catch((error) => {
       next(error);
     });
 }
 
 function changePassword(req, res, next) {
   User.findOne({ hash: req.user.hash, password: hash(req.body.oldPassword) })
-    .select('+password')
-    .then(user => {
+    .select("+password")
+    .then((user) => {
       if (user === null) {
         throw {
           status: 404,
-          error: 'Credentials incorrect. Check old password.'
+          error: "Credentials incorrect. Check old password.",
         };
       }
 
@@ -107,37 +149,53 @@ function changePassword(req, res, next) {
         { password: hash(req.body.newPassword) }
       );
     })
-    .then(user => {
-      res.send({ message: 'Password updated successfully' });
+    .then((user) => {
+      res.send({ message: "Password updated successfully" });
     })
-    .catch(error => {
+    .catch((error) => {
       next(error);
     });
+}
+
+function changeMnemonic(req, res, next) {
+  Organisation.findOne({ name: req.user.organisation })
+    .then(async (organisation) => {
+      // check if mnemonic is valid
+      console.log(req.body.mnemonic);
+      organisation.mnemonic = req.body.mnemonic;
+      const wallet = await Blockchain.createWallet(req.body.mnemonic);
+      organisation.walletAddress = wallet.address;
+      return organisation.save();
+    })
+    .then((saved) => {
+      return res.send(saved);
+    })
+    .catch(next);
 }
 
 function getPhotos(req, res, next) {
   let orgHash = hash(req.user.organisation);
 
-  Photo.find({ $or: [{ owner: orgHash }, { rights: orgHash }] })
-    .populate('ownerUser')
-    .populate({ path: 'transactions', options: { sort: { createdAtUTC: -1 } } })
+  Media.find({ $or: [{ owner: orgHash }, { rights: orgHash }] })
+    .populate("ownerUser")
+    .populate({ path: "transactions", options: { sort: { createdAtUTC: -1 } } })
     .populate({
-      path: 'myTransaction',
+      path: "myTransaction",
       match: { userHash: req.user.hash },
-      select: 'createdAtUTC'
+      select: "createdAtUTC",
     })
     .sort({ createdAtUTC: -1 })
-    .then(function(response) {
+    .then(function (response) {
       res.send(response);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       next(error);
     });
 }
 
 function getOrganisation(req, res, next) {
   Organisation.findOne({ name: req.user.organisation })
-    .then(organisation => {
+    .then((organisation) => {
       return res.send(organisation);
     })
     .catch(next);

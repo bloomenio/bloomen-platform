@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Transaction = require('../models/transaction');
-const Blockchain = require('../helpers/blockchain');
-const hash = require('../helpers/hash');
+const Transaction = require("../models/transaction");
+const Blockchain = require("../helpers/blockchain");
+const hash = require("../helpers/hash");
 const PAGE_SIZE = 10;
 
 /**
@@ -15,7 +15,7 @@ const PAGE_SIZE = 10;
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/', getTransactions);
+router.get("/", getTransactions);
 
 /**
  * Get all transactions for photo
@@ -28,7 +28,7 @@ router.get('/', getTransactions);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/photo/:hash', getPhotoTransactions);
+router.get("/photo/:hash", getPhotoTransactions);
 
 /**
  * Get all transactions for photo
@@ -41,7 +41,7 @@ router.get('/photo/:hash', getPhotoTransactions);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/me', getUserTransactions);
+router.get("/me", getUserTransactions);
 
 /**
  * Check transaction status in the blockchain
@@ -53,7 +53,7 @@ router.get('/me', getUserTransactions);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/check', checkTransactionStatus);
+router.get("/check", checkTransactionStatus);
 
 /**
  * FUNCTIONS IMPLEMENTATION
@@ -65,8 +65,8 @@ function getTransactions(req, res, next) {
   Transaction.find({
     createdAtUTC: { $lt: before }
   })
-    .populate('user')
-    .populate('photo')
+    .populate("user")
+    .populate("photo")
     .limit(PAGE_SIZE)
     .sort({ createdAtUTC: -1 })
     .then(response => {
@@ -75,22 +75,28 @@ function getTransactions(req, res, next) {
     .catch(next);
 }
 
+// FIXME: replace with ethers.js method
 function checkTransactionStatus(req, res, next) {
-  const web3 = Blockchain.getWeb3();
-  const transaction = req.query.transaction;
+  // const web3 = Blockchain.getWeb3();
+  // const transaction = req.query.transaction;
 
-  web3.eth.getTransactionReceipt(transaction).then(response => {
-    if (!!response) {
-      res.send({
-        completed: true,
-        transaction: response
-      });
-    } else {
-      res.send({
-        completed: false,
-        transaction: response
-      });
-    }
+  // web3.eth.getTransactionReceipt(transaction).then(response => {
+  //   if (!!response) {
+  //     res.send({
+  //       completed: true,
+  //       transaction: response
+  //     });
+  //   } else {
+  //     res.send({
+  //       completed: false,
+  //       transaction: response
+  //     });
+  //   }
+  // });
+
+  res.send({
+    completed: true,
+    transaction: { tx: req.query.transaction }
   });
 }
 
@@ -98,10 +104,10 @@ function getPhotoTransactions(req, res, next) {
   const before = req.query.before ? new Date(req.query.before) : new Date();
 
   Transaction.find({
-    photoHash: req.params.hash,
+    mediaHash: req.params.hash,
     createdAtUTC: { $lt: before }
   })
-    .populate('user')
+    .populate("user")
     .limit(PAGE_SIZE)
     .sort({ createdAtUTC: -1 })
     .then(response => {
@@ -117,9 +123,9 @@ function getUserTransactions(req, res, next) {
     $or: [{ userHash: req.user.hash }, { receiverHash: req.user.hash }],
     createdAtUTC: { $lt: before }
   })
-    .populate('user')
-    .populate('receiver')
-    .populate('photo')
+    .populate("user")
+    .populate("receiver")
+    .populate("photo")
     .limit(PAGE_SIZE)
     .sort({ createdAtUTC: -1 })
     .then(response => {

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Invitation = require('../models/invitation');
+const invitation = require('../middlewares/invitation');
 const mailer = require('../helpers/mailer');
 require('dotenv').config();
 const PAGE_SIZE = 10;
@@ -15,7 +16,7 @@ const PAGE_SIZE = 10;
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.get('/', getInvitations);
+router.get('/', invitation.read, getInvitations);
 
 /**
  * Invite new user to my organisation
@@ -28,7 +29,7 @@ router.get('/', getInvitations);
  * @returns {Error} 500 - Unexpected
  * @security JWT
  */
-router.post('/', sendInvitation);
+router.post('/', invitation.create, sendInvitation);
 
 /**
  * FUNCTIONS IMPLEMENTATION
